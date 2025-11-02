@@ -19,7 +19,7 @@ export async function syncUser() {
   const newUser = await db.createUser({
     clerk_id: clerkUser.id,
     email: clerkUser.emailAddresses[0]?.emailAddress || '',
-    name: `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || null,
+    name: `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || undefined,
   });
 
   return newUser;
