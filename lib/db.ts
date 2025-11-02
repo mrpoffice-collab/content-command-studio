@@ -1,15 +1,30 @@
-import { neon } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
+
+// Configure Neon for production
+neonConfig.fetchConnectionCache = true;
 
 // Get the Neon database connection
-export const sql = neon(process.env.DATABASE_URL!);
+const sql = neon(process.env.DATABASE_URL!);
 
 // Helper function to execute queries
 export async function query<T = any>(
-  text: string,
+  queryText: string,
   params: any[] = []
 ): Promise<T[]> {
   try {
-    const result = await sql(text, params);
+    // Build the query with parameters replaced
+    let query = queryText;
+    params.forEach((param, index) => {
+      const placeholder = `$${index + 1}`;
+      const value = typeof param === 'string' ? `'${param.replace(/'/g, "''")}'` :
+                    param === null ? 'NULL' :
+                    Array.isArray(param) ? `ARRAY[${param.map(v => typeof v === 'string' ? `'${v.replace(/'/g, "''")}'` : v).join(',')}]` :
+                    typeof param === 'object' ? `'${JSON.stringify(param).replace(/'/g, "''")}'` :
+                    param;
+      query = query.replace(placeholder, value.toString());
+    });
+
+    const result = await sql(query);
     return result as T[];
   } catch (error) {
     console.error('Database query error:', error);
