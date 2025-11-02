@@ -13,7 +13,7 @@ export async function query<T = any>(
 ): Promise<T[]> {
   try {
     const result = await sql.unsafe(queryText, params);
-    return result as T[];
+    return result as unknown as T[];
   } catch (error) {
     console.error('Database query error:', error);
     throw error;
