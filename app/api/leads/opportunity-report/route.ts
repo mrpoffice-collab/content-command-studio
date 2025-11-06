@@ -375,7 +375,7 @@ Write professionally but conversationally. This goes in a sales proposal.`;
     });
 
     // Return PDF as response
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(Buffer.from(pdfBuffer), {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="Opportunity-Report-${businessName.replace(/[^a-z0-9]/gi, '-')}.pdf"`,
