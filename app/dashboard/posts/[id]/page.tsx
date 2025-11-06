@@ -472,7 +472,7 @@ export default function PostEditorPage({ params }: { params: Promise<{ id: strin
       readabilityScore = post.readability_score;
     } else {
       // Fallback: simplified Flesch calculation (old method for legacy posts)
-      const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+      const sentences = content.split(/[.!?]+/).filter((s: string) => s.trim().length > 0).length;
       const words = wordCount;
       const syllables = words * 1.5; // Rough estimate
       const avgWordsPerSentence = sentences > 0 ? words / sentences : 0;
