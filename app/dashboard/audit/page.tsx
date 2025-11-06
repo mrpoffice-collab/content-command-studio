@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { UserButton } from '@clerk/nextjs';
 import { useSearchParams } from 'next/navigation';
@@ -8,7 +8,7 @@ import AISOBadge from '@/components/AISOBadge';
 import AEOScoreCard from '@/components/AEOScoreCard';
 import { generateComparisonPDF } from '@/lib/comparison-pdf-generator';
 
-export default function AuditPage() {
+function AuditPageContent() {
   const searchParams = useSearchParams();
   const [contentInput, setContentInput] = useState('');
   const [urlInput, setUrlInput] = useState('');
@@ -624,5 +624,13 @@ export default function AuditPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AuditPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>}>
+      <AuditPageContent />
+    </Suspense>
   );
 }
