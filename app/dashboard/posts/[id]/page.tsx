@@ -487,7 +487,7 @@ export default function PostEditorPage({ params }: { params: Promise<{ id: strin
     const hasBoldText = /\*\*.*?\*\*/g.test(content);
     const hasQuestions = /\?/.test(content);
     const hasCallToAction = /(try|start|learn|discover|get|download|subscribe|sign up|contact)/gi.test(content);
-    const paragraphCount = content.split(/\n\n+/).filter(p => p.trim().length > 0).length;
+    const paragraphCount = content.split(/\n\n+/).filter((p: string) => p.trim().length > 0).length;
     const avgParagraphLength = paragraphCount > 0 ? wordCount / paragraphCount : 0;
 
     engagementScore = Math.round(
